@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кто есть кто?</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1c1b19;--mute:#6b675f;--line:#e4e0d6;--a:#2563eb;--a2:#dbeafe;--b:#ea580c;--b2:#ffedd5;--ok:#16a34a;--bad:#dc2626;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15140f;--card:#201f19;--ink:#f3f0e8;--mute:#a09b8e;--line:#34322a;--a:#60a5fa;--a2:#1e3a6e;--b:#fb923c;--b2:#5a2a0c;--ok:#4ade80;--bad:#f87171;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15140f;--card:#201f19;--ink:#f3f0e8;--mute:#a09b8e;--line:#34322a;--a:#60a5fa;--a2:#1e3a6e;--b:#fb923c;--b2:#5a2a0c;--ok:#4ade80;--bad:#f87171;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;justify-content:center}
+main{width:100%;max-width:480px;padding:20px 16px 32px}
+h1{font-size:22px;margin:0 0 4px;text-align:center}
+.sub{color:var(--mute);text-align:center;font-size:14px;margin:0 0 16px}
+.duo{display:flex;justify-content:center;gap:28px;margin-bottom:14px}
+.who{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.av{width:92px;height:92px;border-radius:50%;position:relative;border:3px solid}.av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}.mini{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--ink)}.rv{width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid var(--line)}
+.av small{position:absolute;right:-6px;bottom:-4px;font-size:20px;background:var(--card);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;border:2px solid var(--line)}
+.k{background:var(--a2);border-color:var(--a)}.i{background:var(--b2);border-color:var(--b)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));transition:width .3s}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 20px;text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:transform .25s}
+.card .em{font-size:64px;line-height:1}
+.card p{margin:0;font-size:19px;line-height:1.35;font-weight:600}
+.card.ok{border-color:var(--ok)}.card.no{border-color:var(--bad);animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+button{font:inherit;cursor:pointer;border:2px solid;border-radius:16px;padding:14px 8px;font-weight:700;font-size:16px;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:4px}
+button:disabled{cursor:default;opacity:.55}
+.bk{background:var(--a2);border-color:var(--a)}.bi{background:var(--b2);border-color:var(--b)}
+button span{font-size:28px}
+.fb{margin-top:14px;min-height:48px;text-align:center;font-size:15px;line-height:1.4}
+.next,.again{width:100%;margin-top:10px;background:var(--ink);color:var(--bg);border-color:var(--ink);flex-direction:row;justify-content:center}
+.hide{display:none}
+.end{text-align:center}
+.end .big{font-size:72px}
+.end h2{margin:8px 0}
+.stars{font-size:28px;letter-spacing:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>Кто есть кто?</h1>
+<p class="sub">Угадай, кому из парней принадлежит факт</p>
+<div class="duo">
+<div class="who"><div class="av k"><img class="ph0" alt="Коля"></div>Коля Ачкасов</div>
+<div class="who"><div class="av i"><img class="ph1" alt="Илья"></div>Илья Кольцов</div>
+</div>
+<div id="game">
+<div class="bar"><i id="pb"></i></div>
+<div class="meta"><span id="no"></span><span id="sc"></span></div>
+<div class="card" id="card"><div class="em" id="em"></div><p id="tx"></p><img id="rv" class="rv hide" alt=""></div>
+<div class="btns">
+<button class="bk" id="b0"><img class="mini ph0" alt="">Коля</button>
+<button class="bi" id="b1"><img class="mini ph1" alt="">Илья</button>
+</div>
+<div class="fb" id="fb"></div>
+<button class="next hide" id="nx">Дальше →</button>
+</div>
+<div class="end hide" id="end">
+<div class="big" id="eem"></div>
+<h2 id="eh"></h2>
+<div class="stars" id="es"></div>
+<p id="et" class="sub"></p>
+<button class="again" id="ag">Сыграть ещё раз ↺</button>
+</div>
+</main>
+<script>
+var F=[
+{w:0,e:"🎧",t:"Был диджеем и отвечал за музыкальное сопровождение в школе",c:"Школьные дискотеки были в надёжных руках!"},
+{w:0,e:"🚲",t:"Не умею кататься на велосипеде",c:"Колёса не его стихия."},
+{w:0,e:"🏠",t:"Никогда не работал на удалёнке",c:"Офис — значит офис."},
+{w:0,e:"🧳",t:"Переехал в другой город, потому что просто позвали",c:"Позвали — и поехал. Без долгих раздумий."},
+{w:1,e:"📍",t:"Родился в Вязьме",c:"Родом из Вязьмы."},
+{w:1,e:"🧱",t:"Люблю собирать и коллекционировать LEGO",c:"Конструктор — это серьёзно."},
+{w:1,e:"🎓",t:"В 29 лет пошёл учиться в магистратуру на аналитика",c:"Учиться никогда не поздно!"},
+{w:1,e:"🍳",t:"Люблю готовить еду и не люблю потом убирать кухню за собой",c:"Готовить — да, мыть — увы."}
+];
+var PH=["kolya.jpg","ilya.jpg"],q,i,s,locked;
+function $(x){return document.getElementById(x)}
+function shuffle(a){a=a.slice();for(var j=a.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[k];a[k]=t}return a}
+document.querySelectorAll(".ph0").forEach(function(e){e.src=PH[0]});document.querySelectorAll(".ph1").forEach(function(e){e.src=PH[1]});
+function start(){q=shuffle(F);i=0;s=0;$("game").classList.remove("hide");$("end").classList.add("hide");show()}
+function show(){
+locked=false;var f=q[i];
+$("em").textContent=f.e;$("tx").textContent="«"+f.t+"»";
+$("no").textContent="Факт "+(i+1)+" из "+q.length;$("sc").textContent="Очки: "+s;
+$("pb").style.width=(i/q.length*100)+"%";
+$("card").className="card";$("fb").textContent="";$("rv").classList.add("hide");
+$("nx").classList.add("hide");$("b0").disabled=false;$("b1").disabled=false}
+function pick(n){
+if(locked)return;locked=true;var f=q[i],ok=n===f.w;
+if(ok)s++;
+$("card").className="card "+(ok?"ok":"no");
+$("fb").textContent=(ok?"✅ Верно! ":"❌ Мимо. Это факт про "+(f.w?"Илью":"Колю")+". ")+f.c;
+$("sc").textContent="Очки: "+s;$("rv").src=PH[f.w];$("rv").classList.remove("hide");
+$("b0").disabled=true;$("b1").disabled=true;
+$("nx").textContent=i===q.length-1?"Результат →":"Дальше →";
+$("nx").classList.remove("hide")}
+function next(){i++;if(i>=q.length)finish();else show()}
+function finish(){
+$("game").classList.add("hide");$("end").classList.remove("hide");
+var r=s/q.length,e,h;
+if(r===1){e="🏆";h="Идеально! Ты знаешь парней как облупленных"}
+else if(r>=.75){e="🎉";h="Отличный результат!"}
+else if(r>=.5){e="🙂";h="Неплохо, но есть куда расти"}
+else{e="🤔";h="Пора познакомиться поближе"}
+$("eem").textContent=e;$("eh").textContent=h;
+$("et").textContent="Угадано "+s+" из "+q.length;
+var st="";for(var j=0;j<q.length;j++)st+=j<s?"⭐":"☆";$("es").textContent=st}
+$("b0").onclick=function(){pick(0)};$("b1").onclick=function(){pick(1)};
+$("nx").onclick=next;$("ag").onclick=start;
+start();
+</script>
+</body>
+</html>
